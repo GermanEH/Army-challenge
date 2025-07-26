@@ -1,0 +1,25 @@
+const { Army }=require('./entities/army')
+
+const army1 = new Army('chinese')
+const army2 = new Army('bizantine')
+
+console.log('Ejércitos creados')
+console.log(army1.armyStrength)
+console.log(army2.armyStrength)
+console.log(army1.gold)
+console.log(army2.gold)
+
+console.log('Fuerza de unidad 1 de arqueros:', army1.units.archers[0].strength)
+console.log('Tipo de unidad 1 de lanzeros:', army1.units.pikemans[0].type)
+army1.units.archers[0].strengthen()
+army1.units.pikemans[0].transform()
+console.log('Fuerza de unidad 1 de arqueros tras el entrenamiento:', army1.units.archers[0].strength)
+console.log('Tipo de unidad 1 de lanzeros:', army1.units)
+
+army1.attack(army2)
+
+console.log('Ejército chino ataca al ejército bizantino')
+console.log(army1.armyStrength)
+console.log(army2.armyStrength)
+console.log(army1.gold)
+console.log(army2.gold)
