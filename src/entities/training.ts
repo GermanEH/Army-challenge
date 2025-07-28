@@ -21,7 +21,7 @@ class StrengthTraining implements trainingStrategy {
   strategy =  <T extends UnitType>(unit: Unit<T>, benefit: TrainingBenefit) => unit.strengthen(benefit as number)
 }
 class TransformationTraining implements trainingStrategy {
-  strategy =  <T extends UnitType>(unit: Unit<T>, benefit: TrainingBenefit) => unit.strengthen(benefit as number)
+  strategy =  <T extends UnitType>(unit: Unit<T>, benefit: TrainingBenefit) => unit.transform(benefit as UnitType)
 }
 
 //Registry pattern (se explica en armiesRegistry)

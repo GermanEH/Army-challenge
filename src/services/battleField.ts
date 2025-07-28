@@ -9,7 +9,7 @@ export class BattleField {
         const{attacker, defender, battleResult} = battle
         if(attacker && defender) {
             const attackerStrength = attacker.getArmyStrength()
-            const defenderStrength = attacker.getArmyStrength()
+            const defenderStrength = defender.getArmyStrength()
             if(attackerStrength > defenderStrength) {
                 this.winner = attacker
                 this.loser = defender

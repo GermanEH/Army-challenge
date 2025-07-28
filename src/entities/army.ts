@@ -1,15 +1,11 @@
 import { Castle } from '../services/castle';
 import { Battle } from './battle';
-import type { Civilization, Units, Battle as IBattle, Unit, UnitType } from '../types/index'
+import type { Civilization, Battle as IBattle, Unit } from '../types/index'
 
 export class Army {
 
     private id:string = '0';
-    private units: Units = {
-        pikemans: [],
-        archers: [],
-        knights: [],
-    };
+    private units: Unit[] = []
     private historyBattle:string[] = [];
     private armyStrength:number = 0;
     private gold=1000;
@@ -17,7 +13,6 @@ export class Army {
     constructor(civilizationType:Civilization) {
         this.id=Math.random().toString()
         Castle.createArmy(civilizationType, this)
-
     }
 
     getId(){
@@ -28,8 +23,8 @@ export class Army {
         return this.units
     }
     
-    setUnits(unitType:UnitType, units:Unit<UnitType>[]) {
-        this.units[`${unitType}s`] = units
+    setUnits(units:Unit[]) {
+        this.units = [...this.units,...units]
     }
 
     attack(enemy:Army):IBattle{
@@ -51,31 +46,23 @@ export class Army {
 
     
     setArmyStrength() {
-        this.armyStrength= this.getUnitsStrength(this.units.pikemans) + this.getUnitsStrength(this.units.archers) + this.getUnitsStrength(this.units.knights);
+        this.armyStrength= this.getUnitsStrength(this.units)
     }
 
-    getUnitsStrength<T extends UnitType> (unit:Unit<T>[]): number {
-        return unit.reduce((acc:number, unit:Unit<T>)=>{
+    getUnitsStrength(unit:Unit[]): number {
+        return unit.reduce((acc:number, unit:Unit)=>{
             return acc += unit.getStrength()
         },0)
     }
 
     loseUnits(){
         
-            const sortedUnits = [...this.units.pikemans, ...this.units.archers, ...this.units.knights].sort((a,b) => a.getStrength() as number - b.getStrength())
-            const unitsLost = sortedUnits.slice(0,2)
+        const unitsLost = this.units.toSorted((a, b) => a.getStrength() - b.getStrength()).slice(0, 2);
 
-            const unitsLostIds = unitsLost.map(unit=>unit.getId())
+        this.units = this.units.filter(unit => !unitsLost.includes(unit));
 
-            function filterUnitsByLost<T extends UnitType>(arr: Unit<T>[]): Unit<T>[] {
-                return arr.filter(unit => !unitsLostIds.includes(unit.getId()));
-            }
+        return unitsLost;
 
-            this.units.pikemans = filterUnitsByLost(this.units.pikemans);
-            this.units.archers = filterUnitsByLost(this.units.archers);
-            this.units.knights = filterUnitsByLost(this.units.knights);
-
-            return unitsLost
     }
 
     earnGold(gold:number){

@@ -1,5 +1,6 @@
-import { Archer, Knight, Pikeman } from '../entities/unit';
-import type { Unit, UnitType, TrainingCosts, TrainingBenefits, UnitStrength }  from '../types/index'
+// import { Archer, Knight, Pikeman } from '../entities/unit';
+import { Unit } from '../entities/unit';
+import type { Unit as IUnit, UnitType, TrainingCosts, TrainingBenefits, UnitStrength }  from '../types/index'
 
 export const trainingCosts:TrainingCosts = {
     strength:{
@@ -27,10 +28,16 @@ export const trainingBenefits:TrainingBenefits = {
     }
 } as const
 
-export const createUnitMap:{[K in UnitType]: (armyId: string) => Unit<K>} = {
-    pikeman:(armyId) => {return new Pikeman(armyId)},
-    archer:(armyId) => {return new Archer(armyId)},
-    knight:(armyId) => {return new Knight(armyId)}
+// export const createUnitMap:{[K in UnitType]: (armyId: string) => Unit<K>} = {
+//     pikeman:(armyId) => {return new Pikeman(armyId)},
+//     archer:(armyId) => {return new Archer(armyId)},
+//     knight:(armyId) => {return new Knight(armyId)}
+// }
+
+export const createUnitMap:{[K in UnitType]: (armyId: string) => IUnit<K>} = {
+    pikeman:(armyId) => {return new Unit('pikeman',armyId)},
+    archer:(armyId) => {return new Unit('archer',armyId)},
+    knight:(armyId) => {return new Unit('knight',armyId)}
 }
 
 export const strengthMap:UnitStrength = {

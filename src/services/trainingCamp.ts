@@ -25,15 +25,15 @@ export class TrainingCamp {
             armyId
         );
 
-        army.setUnits(unitType,newUnitGroup)
+        army.setUnits(newUnitGroup)
     });
     }
 
-    private static createUnitGroup<T extends UnitType>(type:T, length:number, armyId:string):IUnit<T>[]{
+    private static createUnitGroup<T extends UnitType>(type:T, length:number, armyId:string):IUnit[]{
         return Array.from({length}, () => createUnitMap[type](armyId));
     }
 
-    static strengthenUnit<T extends UnitType>(unit:IUnit<T>){
+    static strengthenUnit(unit:IUnit){
         return TrainingService.executeTraining('strength', unit)
     }
 
@@ -45,7 +45,7 @@ export class TrainingCamp {
     // Fuente: https://refactoring.guru/design-patterns/state
     // Otra opción sería crear una nueva instancia de la clase Unit, con el tipo de unidad a transformar, y delegar en Army el reemplazo
     // de la antigüa unidad por la nueva. Pero eso rompería el encapsulamiento.
-    static transformUnit<T extends UnitType>(unit:IUnit<T>){
+    static transformUnit(unit:IUnit){
 
         return TrainingService.executeTraining('type', unit)
 
@@ -55,7 +55,7 @@ export class TrainingCamp {
 
 export class TrainingService {
     
-    static executeTraining<T extends UnitType>(trainingType:TrainingType,unit:IUnit<T>){
+    static executeTraining(trainingType:TrainingType,unit:IUnit){
             const paymentResult = Quartermaster.processPayment(trainingType,unit)
             if(paymentResult==="Successfull payment") {
                 Training.start(trainingType,unit)
@@ -72,7 +72,7 @@ export class Quartermaster {
         return trainingCosts[trainingType][trainingUnitType]
     }
 
-    static processPayment<T extends UnitType>(trainingType:TrainingType,unit:IUnit<T>){
+    static processPayment(trainingType:TrainingType,unit:IUnit){
         const price:number = Quartermaster.getPrice(trainingType,unit.getType()) as number
         const army = ArmiesRegistry.getArmy(unit.getArmyId())
         if(army && army.hasGold()){
