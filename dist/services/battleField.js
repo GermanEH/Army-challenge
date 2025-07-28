@@ -2,11 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BattleField = void 0;
 class BattleField {
+    static winner;
+    static loser;
     static determineWinner(battle) {
         const { attacker, defender, battleResult } = battle;
         if (attacker && defender) {
             const attackerStrength = attacker.getArmyStrength();
-            const defenderStrength = attacker.getArmyStrength();
+            const defenderStrength = defender.getArmyStrength();
             if (attackerStrength > defenderStrength) {
                 this.winner = attacker;
                 this.loser = defender;

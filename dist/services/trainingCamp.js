@@ -13,7 +13,7 @@ class TrainingCamp {
             const unitType = unitGroup.slice(0, -1);
             const quantity = unitGroupQuantities[unitGroup];
             const newUnitGroup = TrainingCamp.createUnitGroup(unitType, quantity, armyId);
-            army.setUnits(unitType, newUnitGroup);
+            army.setUnits(newUnitGroup);
         });
     }
     static createUnitGroup(type, length, armyId) {

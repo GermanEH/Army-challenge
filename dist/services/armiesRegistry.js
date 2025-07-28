@@ -5,6 +5,7 @@ exports.ArmiesRegistry = void 0;
 //Con este registro podemos registrar por id a cada ejército y así poder recuperarlo para que le pague los entrenamientos a sus unidades,
 //sin generar acoplamiento con la unidad que se va a entrenar
 class ArmiesRegistry {
+    static armies = new Map();
     static registryArmy(army) {
         ArmiesRegistry.armies.set(army.getId(), army);
     }
@@ -13,4 +14,3 @@ class ArmiesRegistry {
     }
 }
 exports.ArmiesRegistry = ArmiesRegistry;
-ArmiesRegistry.armies = new Map();

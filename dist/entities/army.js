@@ -4,16 +4,12 @@ exports.Army = void 0;
 const castle_1 = require("../services/castle");
 const battle_1 = require("./battle");
 class Army {
+    id = '0';
+    units = [];
+    historyBattle = [];
+    armyStrength = 0;
+    gold = 1000;
     constructor(civilizationType) {
-        this.id = '0';
-        this.units = {
-            pikemans: [],
-            archers: [],
-            knights: [],
-        };
-        this.historyBattle = [];
-        this.armyStrength = 0;
-        this.gold = 1000;
         this.id = Math.random().toString();
         castle_1.Castle.createArmy(civilizationType, this);
     }
@@ -23,8 +19,8 @@ class Army {
     getUnits() {
         return this.units;
     }
-    setUnits(unitType, units) {
-        this.units[`${unitType}s`] = units;
+    setUnits(units) {
+        this.units = [...this.units, ...units];
     }
     attack(enemy) {
         return new battle_1.Battle(this, enemy);
@@ -42,7 +38,7 @@ class Army {
         return this.armyStrength;
     }
     setArmyStrength() {
-        this.armyStrength = this.getUnitsStrength(this.units.pikemans) + this.getUnitsStrength(this.units.archers) + this.getUnitsStrength(this.units.knights);
+        this.armyStrength = this.getUnitsStrength(this.units);
     }
     getUnitsStrength(unit) {
         return unit.reduce((acc, unit) => {
@@ -50,15 +46,8 @@ class Army {
         }, 0);
     }
     loseUnits() {
-        const sortedUnits = [...this.units.pikemans, ...this.units.archers, ...this.units.knights].sort((a, b) => a.getStrength() - b.getStrength());
-        const unitsLost = sortedUnits.slice(0, 2);
-        const unitsLostIds = unitsLost.map(unit => unit.getId());
-        function filterUnitsByLost(arr) {
-            return arr.filter(unit => !unitsLostIds.includes(unit.getId()));
-        }
-        this.units.pikemans = filterUnitsByLost(this.units.pikemans);
-        this.units.archers = filterUnitsByLost(this.units.archers);
-        this.units.knights = filterUnitsByLost(this.units.knights);
+        const unitsLost = this.units.toSorted((a, b) => a.getStrength() - b.getStrength()).slice(0, 2);
+        this.units = this.units.filter(unit => !unitsLost.includes(unit));
         return unitsLost;
     }
     earnGold(gold) {

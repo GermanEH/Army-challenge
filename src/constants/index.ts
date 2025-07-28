@@ -34,7 +34,7 @@ export const trainingBenefits:TrainingBenefits = {
 //     knight:(armyId) => {return new Knight(armyId)}
 // }
 
-export const createUnitMap:{[K in UnitType]: (armyId: string) => IUnit<K>} = {
+export const createUnitMap:{[K in UnitType]: (armyId: string) => IUnit} = {
     pikeman:(armyId) => {return new Unit('pikeman',armyId)},
     archer:(armyId) => {return new Unit('archer',armyId)},
     knight:(armyId) => {return new Unit('knight',armyId)}

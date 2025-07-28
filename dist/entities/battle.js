@@ -6,14 +6,16 @@ const battlesRegistry_1 = require("../services/battlesRegistry");
 //Es necesario persistir estado interno de la batalla para ser consultados en el historial de batalla de cada ejército.
 //Por eso lo creamos como una clase a ser instanciada en vez de una clase pública con métodos static.
 class Battle {
+    id = '';
+    attacker;
+    defender;
+    battleResult = {
+        winner: null,
+        loser: null,
+        goldAwarded: null,
+        unitsLost: null
+    };
     constructor(attacker, defender) {
-        this.id = '';
-        this.battleResult = {
-            winner: null,
-            loser: null,
-            goldAwarded: null,
-            unitsLost: null
-        };
         this.attacker = attacker;
         this.defender = defender;
         battleField_1.BattleField.determineWinner(this);

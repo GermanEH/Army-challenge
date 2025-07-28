@@ -4,14 +4,10 @@ exports.Training = void 0;
 const index_1 = require("../constants/index");
 //Estrategias concretas
 class StrengthTraining {
-    constructor() {
-        this.strategy = (unit, benefit) => unit.strengthen(benefit);
-    }
+    strategy = (unit, benefit) => unit.strengthen(benefit);
 }
 class TransformationTraining {
-    constructor() {
-        this.strategy = (unit, benefit) => unit.strengthen(benefit);
-    }
+    strategy = (unit, benefit) => unit.transform(benefit);
 }
 //Registry pattern (se explica en armiesRegistry)
 const Trainings = Object.freeze({

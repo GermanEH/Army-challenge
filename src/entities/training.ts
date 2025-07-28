@@ -13,15 +13,15 @@ import { trainingBenefits } from '../constants/index'
 // mente.
 // Fuente: apuntes propios y https://refactoring.guru/es/design-patterns/strategy
 interface trainingStrategy {
-  strategy:<T extends UnitType>(unit: Unit<T>, benefit: TrainingBenefit) => void
+  strategy:(unit: Unit, benefit: TrainingBenefit) => void
 }
 
 //Estrategias concretas
 class StrengthTraining implements trainingStrategy {
-  strategy =  <T extends UnitType>(unit: Unit<T>, benefit: TrainingBenefit) => unit.strengthen(benefit as number)
+  strategy =  (unit: Unit, benefit: TrainingBenefit) => unit.strengthen(benefit as number)
 }
 class TransformationTraining implements trainingStrategy {
-  strategy =  <T extends UnitType>(unit: Unit<T>, benefit: TrainingBenefit) => unit.transform(benefit as UnitType)
+  strategy =  (unit: Unit, benefit: TrainingBenefit) => unit.transform(benefit as UnitType)
 }
 
 //Registry pattern (se explica en armiesRegistry)
@@ -33,7 +33,7 @@ const Trainings = Object.freeze({
 //Contexto de las estrategias
 export class Training {
 
-    static start<T extends UnitType>(trainingType:TrainingType, unit:Unit<T>){
+    static start(trainingType:TrainingType, unit:Unit){
       
         const benefit = trainingBenefits[trainingType][unit.getType()]
 

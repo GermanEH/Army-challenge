@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.unitsByCivilization = exports.unitGroup = exports.strengthMap = exports.createUnitMap = exports.trainingBenefits = exports.trainingCosts = void 0;
+// import { Archer, Knight, Pikeman } from '../entities/unit';
 const unit_1 = require("../entities/unit");
 exports.trainingCosts = {
     strength: {
@@ -26,10 +27,15 @@ exports.trainingBenefits = {
         knight: ""
     }
 };
+// export const createUnitMap:{[K in UnitType]: (armyId: string) => Unit<K>} = {
+//     pikeman:(armyId) => {return new Pikeman(armyId)},
+//     archer:(armyId) => {return new Archer(armyId)},
+//     knight:(armyId) => {return new Knight(armyId)}
+// }
 exports.createUnitMap = {
-    pikeman: (armyId) => { return new unit_1.Pikeman(armyId); },
-    archer: (armyId) => { return new unit_1.Archer(armyId); },
-    knight: (armyId) => { return new unit_1.Knight(armyId); }
+    pikeman: (armyId) => { return new unit_1.Unit('pikeman', armyId); },
+    archer: (armyId) => { return new unit_1.Unit('archer', armyId); },
+    knight: (armyId) => { return new unit_1.Unit('knight', armyId); }
 };
 exports.strengthMap = {
     pikeman: 5,
