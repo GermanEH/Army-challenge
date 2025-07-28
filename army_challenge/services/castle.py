@@ -1,13 +1,14 @@
-from types.index import Civilization, IArmy
-from services.armiesRegistry import ArmiesRegistry
-from services.armyStatistics import ArmyStatistics
-from services.trainingCamp import TrainingCamp
+from ..types import Civilization, Army
+from ..services import ArmiesRegistry, training_camp
 
 class Castle:
 
     @staticmethod
-    def create_army(civilizationType:Civilization, army: IArmy) -> str:
-        ArmiesRegistry.registryArmy(army)
-        TrainingCamp.createUnits(civilizationType,army)
-        ArmyStatistics.setArmyStrength(army)
-        return "Ejército creado exitosamente"
+    def create_army(civilizationType:Civilization, army: Army) -> str:
+        try:
+            ArmiesRegistry.registryArmy(army)
+            TrainingCamp.createUnits(civilizationType,army)
+            army.set_army_strength(army)
+            return "Ejército creado exitosamente"
+        except Exception as error:
+            return f"Error creating army: {error}"

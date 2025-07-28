@@ -1,48 +1,47 @@
-from .type import IBattle,IBattleResult,IUnitType,Units,IUnit
-from .armyStatistics import armyStatistics
+from typing import List
+from ..types import Battle, BattleResult, Unit_type, Units, Unit, Army
 
 class BattleField:
 
+    __winner:Army
+    __loser:Army
+
     @staticmethod
-    def determine_winner(battle:IBattle)
-        {attacker, defender, battleResult} = battle
-        if(attacker && defender) 
-            if(attacker.armyStrength > defender.armyStrength) 
+    def determine_winner(battle:Battle) -> None:
+        attacker = battle.attacker
+        defender = battle.defender
+        battle_result = battle.battleResult 
+        if(attacker and defender):
+            attacker_strength = attacker.get_army_strength()
+            defender_strength = defender.get_army_strength()
+            if(attacker_strength > defender_strength):
+                self.__winner = attacker
+                self.__loser = defender
                 battleResult.winner = attacker 
                 battleResult.loser = defender
-            else 
+            else:
+                self.__winner = defender
+                self.__loser = attacker
                 battleResult.winner = defender
                 battleResult.loser = attacker
 
     @staticmethod
-    def __add_gold(battleResult:IBattleResult)
+    def __add_gold(battle_result:BattleResult) -> None:
 
-        if(battleResult.winner)
-
-            battleResult.winner.gold += 100
-            battleResult.goldAwarded = 100
-
-    @staticmethod
-    def __remove_units(units:Units, unitsLost:IUnit<IUnitType>[] | null)
-
-             sortedUnits = [...units.pikemans, ...units.archers, ...units.knights].sort((a,b) => a.strength as int - b.strength!)
-            unitsLost = sortedUnits.slice(0,2)
-
-             unitsLostIds = unitsLost.map(unit=>unit.id)
-
-            function filterUnitsByLost<T extends IUnit<IUnitType>>(arr: T[]): T[] 
-                return arr.filter(unit => !unitsLostIds.includes(unit.id))
-            
-
-            units.pikemans = filterUnitsByLost(units.pikemans)
-            units.archers = filterUnitsByLost(units.archers)
-            units.knights = filterUnitsByLost(units.knights)
-
-            return unitsLost
+        if(battle_result.winner):
+            self.__winner.earn_gold(100)
+            battle_result.winner.earn_gold(100)
+            battle_result.gold_awarded = 100
 
     @staticmethod
-    def process_result(battleResult:IBattleResult)
-        if(battleResult.winner && battleResult.loser)
+    def __remove_units(units:Units, unitsLost:List[Unit[Unit_type]] | None) -> None:
+
+            battleResult.units_lost = self.loser.lose_units()
+            battleResult.loser.lose_units()
+
+    @staticmethod
+    def process_result(battleResult:BattleResult) -> None:
+        if(battleResult.winner and battleResult.loser):
             BattleField.addGold(battleResult)
-            BattleField.removeUnits(battleResult.loser.units,battleResult.unitsLost)
-            ArmyStatistics.setArmyStrength(battleResult.loser)
+            BattleField.removeUnits(BattleResult)
+            battle_result_loser.set_army_strength()

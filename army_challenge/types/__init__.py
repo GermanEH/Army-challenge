@@ -3,22 +3,22 @@ from .army import (
     Army,
     Unit,
     UnitStrength,
-    UnitType,
+    Unit_type,
     Units
 )
 
-from training (
+from .training import (
     UnitStrengthTrainingCost,
     UnitStrengthTrainingBenefit,
     UnitTransformationCost,
     UnitTransformationResult,
-    TrainingType,
-    TrainingCosts,
-    TrainingBenefits,
-    TrainingBenefit
+    Training_type,
+    Training_costs,
+    Training_benefits,
+    Training_benefit
 )
 
-from .battle (
+from .battle import (
     Battle,
     BattleResult
 )
@@ -33,12 +33,12 @@ __all__ = [
     "UnitStrengthTrainingBenefit",
     "UnitTransformationCost",
     "UnitTransformationResult",
-    "IUnitType",
+    "Unit_type",
     "Units",
-    "TrainingType",
-    "TrainingCosts",
-    "TrainingBenefits",
-    "TrainingBenefit",
-    "IBattle",
-    "IBattleResult",
+    "Training_type",
+    "Training_costs",
+    "Training_benefits",
+    "Training_benefit",
+    "Battle",
+    "BattleResult",
 ]

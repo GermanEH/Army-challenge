@@ -1,4 +1,7 @@
-TrainingType = Literal['strength', 'type']
+from typing import Literal, TypedDict, Union
+from .army import Unit_type
+
+Training_type = Literal['strength', 'type']
 
 class UnitStrengthTrainingCost(TypedDict):
     pikeman: int
@@ -16,17 +19,17 @@ class UnitTransformationCost(TypedDict):
     knight: None
 
 class UnitTransformationResult(TypedDict):
-    pikeman: IUnitType
-    archer: IUnitType
+    pikeman: Unit_type
+    archer: Unit_type
 
-TrainingCosts = TypedDict('TrainingCosts', {
+Training_costs = TypedDict('TrainingCosts', {
     'strength': UnitStrengthTrainingCost,
     'type': UnitTransformationCost,
 })
 
-TrainingBenefits = TypedDict('TrainingBenefits', {
+Training_benefits = TypedDict('TrainingBenefits', {
     'strength': UnitStrengthTrainingBenefit,
     'type': UnitTransformationResult,
 })
 
-TrainingBenefit = Union[int, IUnitType]
+Training_benefit = Union[int, Unit_type]

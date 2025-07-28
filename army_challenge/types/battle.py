@@ -1,11 +1,14 @@
+from typing import TypedDict, Protocol, Optional, List
+from .army import Army, Unit
+
 class BattleResult(TypedDict):
-    winner: Optional[IArmy]
-    loser: Optional[IArmy]
+    winner: Optional[Army]
+    loser: Optional[Army]
     goldAwarded: Optional[int]
-    unitsLost: Optional[List[IUnit]]
+    unitsLost: Optional[List[Unit]]
 
 class Battle(Protocol):
     id: str
-    attacker: Optional[IArmy]
-    defender: Optional[IArmy]
-    battleResult: IBattleResult
+    attacker: Optional[Army]
+    defender: Optional[Army]
+    battleResult: BattleResult

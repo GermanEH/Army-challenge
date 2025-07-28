@@ -1,4 +1,4 @@
-from .type import IUnit, Training_costs, Training_type, Training_benefits
+from ..types import Unit, Training_costs, Training_type, Training_benefits, Training_benefit
 from typing import TypedDict, Literal, Dict, Callable, Union, List
 
 training_costs:Training_costs = {
@@ -26,7 +26,7 @@ training_benefits:Training_benefits = {
     }
 }
 
-training_map: Dict[str, Callable[[IUnit, Training_benefit], None]] = {
+training_map: Dict[str, Callable[[Unit, Training_benefit], None]] = {
     "strength": lambda unit, benefit: setattr(unit, 'strength', unit.strength + benefit),
     "type": lambda unit, benefit: setattr(unit, 'type', benefit)
 }

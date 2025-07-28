@@ -1,12 +1,11 @@
-from .types import IArmy,IBattleResult
-from .services.battleField import BattleField
-from services.battlesRegistry import BattleRegistry
+from ..types import Army as IArmy, BattleResult
+from ..services import BattleField, BattleRegistry
 
 # Es necesario persistir estado interno de la batalla para ser consultados en el historial de batalla de cada ejército.
 # Por eso lo creamos como una clase a ser instanciada en vez de una clase con métodos static.
 class Battle:
 
-    def __init__(attacker:IArmy, defender:IArmy)
+    def __init__(attacker:IArmy, defender:IArmy):
         
         self.id: str = ''
         self.attacker = attacker

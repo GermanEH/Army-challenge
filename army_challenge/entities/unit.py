@@ -1,32 +1,62 @@
-from types.index import IUnitType, UnitStrength
-from services.trainingCamp import TrainingCamp
-from constants.index import strength_map
+from abc import ABC, abstractmethod
+from ..types import Unit_type
+from ..services import training_camp
+from ..constants import strength_dict
 from random import random
 
-class Unit <T extends IUnitType>:
+class Unit(ABC):
 
-        id:str='0'
-        type!:T
-        strength: UnitStrength[T]
-        armyId:str='0'
-        lifeYears:int=0
+    def __init__(type:Unit_type, armyId:str):
+        self.__id=str(random())
+        self.__type=type
+        self.__strength=strength_dict[type]
+        self.__armyId=armyId
+        self.__life_years=0
 
-        def __init__(type:T, armyId:str)
-            self.id=str(random())
-            self.type=type
-            self.strength=strengthMap[type]
-            self.armyId=armyId
+    def get_id():
+        return self.__id
+
+    def get_army_id():
+        return self.__army_id
         
+    def get_type():
+        return self.__type
 
-        def strengthen()
-            console.log(TrainingCamp)
-            TrainingCamp.strengthenUnit(self)
-        
+    def get_strength():
+        return self.__strength
 
-        def transform()
-            if(self.type !== 'knight')
-                TrainingCamp.transformUnit(self)
-            
-        
-        def getLifeYears()
-            return self.lifeYears
+    def strengthen(strength:int):
+        self.strength += strength
+
+    def transform(type:Unit_type):
+        self.__type=type
+
+    def startStrengthTraining():
+        return TrainingCamp.strengthenUnit(this)
+
+    @abstractmethod
+    def startTransformTraining() -> str:
+        ...
+
+    def getLifeYears() -> int:
+        return self.lifeYears
+
+# Herencia y polimorfismo.
+class Pikeman:
+    def __init__(self, army_id:str):
+        super().__init__('pikeman', army_id)
+    def startTransformTraining(self) -> str:
+        return TrainingCamp.transform_unit(self)
+
+class Archer:
+    def __init__(self, army_id:str):
+        super().__init__('archer', army_id)
+    def startTransformTraining(self) -> str: 
+        return TrainingCamp.transform_unit(self)
+
+class Knight:
+    def __init__(self, army_id:str):
+        super().__init__('knight', army_id)
+    
+    def startTransformTraining(self) -> str:
+        return "Knights cannot be transformed"
