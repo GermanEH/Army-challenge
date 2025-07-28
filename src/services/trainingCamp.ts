@@ -12,21 +12,19 @@ import type {
 export class TrainingCamp {
 
     static createUnits(civilizationType:Civilization, army:Army){
+        
         const unitGroupQuantities = unitsByCivilization[civilizationType]
         const armyId = army.getId()
-        const units = army.getUnits()
-        Object.entries(units).forEach(([unitGroup, _]) => {
-        const unitType = unitGroup.slice(0, -1) as UnitType;
-        const quantity = unitGroupQuantities[unitGroup as keyof typeof unitGroupQuantities];
-        
-        const newUnitGroup = TrainingCamp.createUnitGroup(
-            unitType, 
-            quantity, 
-            armyId
-        );
-
-        army.setUnits(newUnitGroup)
-    });
+        for(let unitGroup in unitGroupQuantities) {
+            const unitType = unitGroup.slice(0, -1) as UnitType;
+            const quantity = unitGroupQuantities[unitGroup as keyof typeof unitGroupQuantities];
+            const newUnitGroup = TrainingCamp.createUnitGroup(
+                unitType, 
+                quantity, 
+                armyId
+            );
+            army.setUnits(newUnitGroup)
+        }
     }
 
     private static createUnitGroup<T extends UnitType>(type:T, length:number, armyId:string):IUnit[]{
@@ -57,9 +55,11 @@ export class TrainingService {
     
     static executeTraining(trainingType:TrainingType,unit:IUnit){
             const paymentResult = Quartermaster.processPayment(trainingType,unit)
-            if(paymentResult==="Successfull payment") {
+            if(paymentResult.startsWith("Successfull payment")) {
+                
                 Training.start(trainingType,unit)
-                return `Unit ${unit.getId()} of type ${unit.getType()} successfully trained.` 
+                ArmiesRegistry.getArmy(unit.getArmyId())?.setArmyStrength()
+                return `Unit ${unit.getId()} of type ${unit.getType()} successfully trained. Fuerza total del ejército actualizada` 
             }
             return paymentResult
     }

@@ -8,13 +8,12 @@ class TrainingCamp {
     static createUnits(civilizationType, army) {
         const unitGroupQuantities = index_1.unitsByCivilization[civilizationType];
         const armyId = army.getId();
-        const units = army.getUnits();
-        Object.entries(units).forEach(([unitGroup, _]) => {
+        for (let unitGroup in unitGroupQuantities) {
             const unitType = unitGroup.slice(0, -1);
             const quantity = unitGroupQuantities[unitGroup];
             const newUnitGroup = TrainingCamp.createUnitGroup(unitType, quantity, armyId);
             army.setUnits(newUnitGroup);
-        });
+        }
     }
     static createUnitGroup(type, length, armyId) {
         return Array.from({ length }, () => index_1.createUnitMap[type](armyId));
@@ -38,9 +37,10 @@ exports.TrainingCamp = TrainingCamp;
 class TrainingService {
     static executeTraining(trainingType, unit) {
         const paymentResult = Quartermaster.processPayment(trainingType, unit);
-        if (paymentResult === "Successfull payment") {
+        if (paymentResult.startsWith("Successfull payment")) {
             training_1.Training.start(trainingType, unit);
-            return `Unit ${unit.getId()} of type ${unit.getType()} successfully trained.`;
+            armiesRegistry_1.ArmiesRegistry.getArmy(unit.getArmyId())?.setArmyStrength();
+            return `Unit ${unit.getId()} of type ${unit.getType()} successfully trained. Fuerza total del ejército actualizada`;
         }
         return paymentResult;
     }

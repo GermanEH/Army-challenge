@@ -26,7 +26,6 @@ class BattleField {
     static addGold(battleResult) {
         if (battleResult.winner) {
             this.winner.earnGold(100);
-            battleResult.winner.earnGold(100);
             battleResult.goldAwarded = 100;
         }
     }

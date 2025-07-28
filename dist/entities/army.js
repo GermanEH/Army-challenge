@@ -46,7 +46,7 @@ class Army {
         }, 0);
     }
     loseUnits() {
-        const unitsLost = this.units.toSorted((a, b) => a.getStrength() - b.getStrength()).slice(0, 2);
+        const unitsLost = [...this.units].sort((a, b) => a.getStrength() - b.getStrength()).slice(0, 2);
         this.units = this.units.filter(unit => !unitsLost.includes(unit));
         return unitsLost;
     }
