@@ -6,11 +6,10 @@ exports.ArmiesRegistry = void 0;
 //sin generar acoplamiento con la unidad que se va a entrenar
 class ArmiesRegistry {
     static registryArmy(army) {
-        army.id = Math.random().toString();
-        this.armies.set(army.id, army);
+        ArmiesRegistry.armies.set(army.getId(), army);
     }
     static getArmy(armyId) {
-        return this.armies.get(armyId);
+        return ArmiesRegistry.armies.get(armyId);
     }
 }
 exports.ArmiesRegistry = ArmiesRegistry;

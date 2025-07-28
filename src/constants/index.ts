@@ -1,4 +1,5 @@
-import type { IUnit, IUnitType, TrainingCosts, TrainingType, TrainingBenefits, UnitStrength, TrainingBenefit }  from '../types/index'
+import { Archer, Knight, Pikeman } from '../entities/unit';
+import type { Unit, UnitType, TrainingCosts, TrainingBenefits, UnitStrength }  from '../types/index'
 
 export const trainingCosts:TrainingCosts = {
     strength:{
@@ -21,16 +22,16 @@ export const trainingBenefits:TrainingBenefits = {
     },
     type:{
         pikeman:"archer",
-        archer:"knight"
+        archer:"knight",
+        knight:""
     }
 } as const
 
-export const trainingMap:Record<TrainingType, (unit:IUnit<IUnitType>,benefit:TrainingBenefit)=>void> = {
-
-    strength: (unit,benefit)=> unit.strength! += benefit as number,
-    type: (unit,benefit)=> unit.type! = benefit as IUnitType
-
-} as const
+export const createUnitMap:{[K in UnitType]: (armyId: string) => Unit<K>} = {
+    pikeman:(armyId) => {return new Pikeman(armyId)},
+    archer:(armyId) => {return new Archer(armyId)},
+    knight:(armyId) => {return new Knight(armyId)}
+}
 
 export const strengthMap:UnitStrength = {
     pikeman:5,
@@ -38,9 +39,9 @@ export const strengthMap:UnitStrength = {
     knight:20,
 } as const;
 
-export const unitGroup: IUnitType[] = ["pikeman", "archer", "knight"];
+export const unitGroup: UnitType[] = ["pikeman", "archer", "knight"];
 
-export const unitsMap = {
+export const unitsByCivilization = {
   chinese: { pikemans: 2, archers: 25, knights: 2 },
   bizantine: { pikemans: 10, archers: 10, knights: 10 },
   english: { pikemans: 2, archers: 10, knights: 15 },

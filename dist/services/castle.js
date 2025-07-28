@@ -2,14 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Castle = void 0;
 const armiesRegistry_1 = require("../services/armiesRegistry");
-const armyStatistics_1 = require("../services/armyStatistics");
 const trainingCamp_1 = require("../services/trainingCamp");
+//Clase helper que sólo agrupa lógica.
 class Castle {
     static createArmy(civilizationType, army) {
-        armiesRegistry_1.ArmiesRegistry.registryArmy(army);
-        trainingCamp_1.TrainingCamp.createUnits(civilizationType, army);
-        armyStatistics_1.ArmyStatistics.setArmyStrength(army);
-        return "Ejército creado exitosamente";
+        try {
+            armiesRegistry_1.ArmiesRegistry.registryArmy(army);
+            trainingCamp_1.TrainingCamp.createUnits(civilizationType, army);
+            army.setArmyStrength();
+            return "Army created successfully";
+        }
+        catch (error) {
+            return `Error creating army: ${error}`;
+        }
     }
 }
 exports.Castle = Castle;

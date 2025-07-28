@@ -1,14 +1,34 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Training = void 0;
-const { trainingBenefits, trainingMap } = require('../constants/index');
+const index_1 = require("../constants/index");
+//Estrategias concretas
+class StrengthTraining {
+    constructor() {
+        this.strategy = (unit, benefit) => unit.strengthen(benefit);
+    }
+}
+class TransformationTraining {
+    constructor() {
+        this.strategy = (unit, benefit) => unit.strengthen(benefit);
+    }
+}
+//Registry pattern (se explica en armiesRegistry)
+const Trainings = Object.freeze({
+    strength: new StrengthTraining(),
+    type: new TransformationTraining()
+});
+//Contexto de las estrategias
 class Training {
     static start(trainingType, unit) {
-        console.log(trainingType);
-        console.log(unit);
-        const benefit = trainingBenefits[trainingType][unit.type];
-        console.log(benefit);
-        trainingMap[trainingType](unit, benefit);
+        const benefit = index_1.trainingBenefits[trainingType][unit.getType()];
+        Trainings[trainingType].strategy(unit, benefit);
     }
 }
 exports.Training = Training;
+// Para mayor simplicidad y reducción de código se puede almacenar las estrategias en el objeto "trainings", pero dejaría de ser patrón
+// strategy y no se podrían utilizar las clases de estrategias en otros lugares de la aplicación, además de que se dificulta el testeo:
+//     private static readonly trainings = Object.freeze({
+//         strength: <T extends UnitType>(unit: Unit<T>, benefit: TrainingBenefit) => unit.strengthen(benefit as number),
+//        type: <T extends UnitType>(unit: Unit<T>, benefit: TrainingBenefit) => unit.strengthen(benefit as number)
+//     } as const);

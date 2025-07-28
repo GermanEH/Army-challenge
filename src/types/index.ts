@@ -1,23 +1,30 @@
 export type Civilization = 'chinese'|'bizantine'|'english'
 
-export interface IArmy {
-    id:string
-        units: Units
-    historyBattle:string[];
-    armyStrength:number;
-    gold:number;
+export interface Army {
+    getId:()=>string
+    getUnits:()=>Units
+    setUnits:(unitType:UnitType, units:Unit<UnitType>[])=>void
     payUnitTraining:(price:number)=>string;
-
+    getArmyStrength:()=>void
+    setArmyStrength:()=>void
+    getUnitsStrength:(unit:Unit<UnitType>[])=>void
+    earnGold:(gold:number)=>void
+    hasGold:()=>boolean
+    getGold:()=>number
+    loseUnits:()=>(Unit<"pikeman"> | Unit<"archer"> | Unit<"knight">)[]
+    addBattle:(battleId:string)=>void
+    hadBattle:(battleId:string)=>void
 }
 
-export interface IUnit<T> {
-    id:string 
-    type:T
-    strength:number
-    armyId:string, 
-    lifeYears:number, 
-    strengthen:()=>void, 
-    transform:()=>void, 
+export interface Unit<T> {
+    getId:()=>string
+    getStrength:()=>number
+    strengthen:(benefit:number)=>void,
+    getArmyId:()=>string
+    getType:()=>UnitType
+    transform:(type:T)=>void, 
+    startStrengthTraining:()=>void, 
+    startTransformTraining:()=>void,
     getLifeYears:()=>number
 }
 
@@ -48,14 +55,15 @@ export interface UnitTransformationCost {
 export interface UnitTransformationResult {
     "pikeman":"archer";
     "archer":"knight";
+    "knight":""
 }
 
-export type IUnitType = "pikeman" | "archer" | "knight"
+export type UnitType = "pikeman" | "archer" | "knight"
 
 export type Units = {
-    pikemans: IUnit<'pikeman'>[];
-    archers: IUnit<'archer'>[];
-    knights: IUnit<'knight'>[];
+    pikemans: Unit<'pikeman'>[];
+    archers: Unit<'archer'>[];
+    knights: Unit<'knight'>[];
 }
 
 export type TrainingType = 'strength' | 'type'
@@ -70,18 +78,18 @@ export type TrainingBenefits = {
     type:UnitTransformationResult
 }
 
-export type TrainingBenefit = number|IUnitType
+export type TrainingBenefit = number|UnitType|""
 
-export interface IBattle {
+export interface Battle {
     id:string
-    readonly attacker:IArmy|undefined
-    readonly defender:IArmy|undefined
-    battleResult:IBattleResult
+    readonly attacker:Army|undefined
+    readonly defender:Army|undefined
+    battleResult:BattleResult
 }
 
-export interface IBattleResult {
-    winner:IArmy|null,
-    loser:IArmy|null,
+export interface BattleResult {
+    winner:Army|null,
+    loser:Army|null,
     goldAwarded:number|null,
-    unitsLost:IUnit<IUnitType>[]|null
+    unitsLost:(Unit<"archer"> | Unit<"pikeman"> | Unit<"knight">)[]|null
 }

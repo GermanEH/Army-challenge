@@ -1,55 +1,52 @@
-import type { IBattle,IBattleResult,IUnitType,Units,IUnit } from '../types/index'
-const {ArmyStatistics} = require('./armyStatistics')
+import type { Battle,BattleResult, Army } from '../types/index'
 
 export class BattleField {
 
-    static determineWinner(battle:IBattle){
+    private static winner:Army;
+    private static loser:Army;
+
+    static determineWinner(battle:Battle){
         const{attacker, defender, battleResult} = battle
         if(attacker && defender) {
-            if(attacker.armyStrength > defender.armyStrength) {
+            const attackerStrength = attacker.getArmyStrength()
+            const defenderStrength = attacker.getArmyStrength()
+            if(attackerStrength > defenderStrength) {
+                this.winner = attacker
+                this.loser = defender
                 battleResult.winner = attacker 
                 battleResult.loser = defender
             } else {
+                this.winner = defender
+                this.loser = attacker
                 battleResult.winner = defender
                 battleResult.loser = attacker
             }
         }
     }
-    private static addGold(battleResult:IBattleResult){
+    private static addGold(battleResult:BattleResult){
 
         if(battleResult.winner){
 
-            battleResult.winner.gold += 100;
+            this.winner.earnGold(100)
+            battleResult.winner.earnGold(100);
             battleResult.goldAwarded = 100;
 
         }
         
     }
 
-    private static removeUnits(units:Units, unitsLost:IUnit<IUnitType>[] | null){
+    private static removeUnits(battleResult:BattleResult){
 
-            const sortedUnits = [...units.pikemans, ...units.archers, ...units.knights].sort((a,b) => a.strength as number - b.strength!)
-            unitsLost = sortedUnits.slice(0,2)
-
-            const unitsLostIds = unitsLost.map(unit=>unit.id)
-
-            function filterUnitsByLost<T extends IUnit<IUnitType>>(arr: T[]): T[] {
-                return arr.filter(unit => !unitsLostIds.includes(unit.id));
-            }
-
-            units.pikemans = filterUnitsByLost(units.pikemans);
-            units.archers = filterUnitsByLost(units.archers);
-            units.knights = filterUnitsByLost(units.knights);
-
-            return unitsLost
-
+            battleResult.unitsLost = this.loser.loseUnits()
+            battleResult.loser?.loseUnits()
     }
 
-    static processResult(battleResult:IBattleResult){
+    static processResult(battleResult:BattleResult){
         if(battleResult.winner && battleResult.loser){
             BattleField.addGold(battleResult);
-            BattleField.removeUnits(battleResult.loser.units,battleResult.unitsLost);
-            ArmyStatistics.setArmyStrength(battleResult.loser)
+            BattleField.removeUnits(battleResult);
+            this.loser.setArmyStrength()
+            battleResult.loser.setArmyStrength()
         }
     }
 

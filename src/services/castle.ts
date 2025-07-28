@@ -1,15 +1,19 @@
-import type { Civilization, IArmy } from '../types/index'
+import type { Civilization, Army } from '../types/index'
 import { ArmiesRegistry } from '../services/armiesRegistry';
-import { ArmyStatistics } from '../services/armyStatistics';
 import { TrainingCamp } from '../services/trainingCamp';
 
+//Clase helper que sólo agrupa lógica.
 export class Castle {
 
-    static createArmy(civilizationType:Civilization, army: IArmy){
-        ArmiesRegistry.registryArmy(army)
-        TrainingCamp.createUnits(civilizationType,army)
-        ArmyStatistics.setArmyStrength(army);
-        return "Ejército creado exitosamente"
+    static createArmy(civilizationType:Civilization, army: Army){
+        try {
+            ArmiesRegistry.registryArmy(army)
+            TrainingCamp.createUnits(civilizationType,army)
+            army.setArmyStrength();
+            return "Army created successfully"
+        } catch (error) {
+            return `Error creating army: ${error}`
+        }
     }
 
 }
